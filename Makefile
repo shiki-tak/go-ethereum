@@ -12,7 +12,12 @@ GOBIN = ./build/bin
 GO ?= latest
 GORUN = env GO111MODULE=on go run
 
-geth:
+prepare_evmc:
+	rm -rf ./vendor
+	mkdir -p ./vendor/github.com/ethereum/evmc
+	git clone https://github.com/shiki-tak/evmc.git -b v0.6.3 ./vendor/github.com/ethereum/evmc
+
+geth: prepare_evmc
 	$(GORUN) build/ci.go install ./cmd/geth
 	@echo "Done building."
 	@echo "Run \"$(GOBIN)/geth\" to launch geth."
